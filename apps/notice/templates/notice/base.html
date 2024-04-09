@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>휘리에스</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <!-- 내비게이션 바를 작성한다 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('detector.index') }}">휘리에스 아샤</a>
+            
+            <!-- 이미지 검색 폼을 추가한다 -->
+            
+            <!-- 사용자 정보와 로그아웃 링크 -->
+            <div class="navbar-nav ml-auto">
+                {% if current_user.is_authenticated %}
+                    <a class="nav-link" href="{{ url_for('notice.notice_index') }}">공지사항</a>
+                    <a class="nav-link" href="{{ url_for('crud.users') }}">회원일람</a>
+                    <a class="nav-link" href="{{ url_for('detector.dindex') }}">감지</a>
+                    <span class="nav-item nav-link">{{ current_user.username }}</span>
+                    <a href="{{ url_for('auth.logout') }}" class="nav-link">로그아웃</a>
+                {% else %}
+                    <a class="nav-link" href="{{ url_for('auth.signup') }}">신규 등록</a>
+                    <a class="nav-link" href="{{ url_for('auth.login') }}">로그인</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- block content를 section class="container"로 둘러싼다 -->
+    <section class="container">
+        {% block content %}{% endblock %}
+    </section>
+
+    <script>
+         function submit_go(){
+            form = document.querySelector("form[name='dtSearchForm']");
+            if(!form.search.value){
+                alert("검색 태그를 입력하세요.");
+                return false;
+            }
+            form.submit();
+        }
+    </script>
+</body>
+
+</html>

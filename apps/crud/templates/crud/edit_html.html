@@ -1,0 +1,59 @@
+{% extends "crud/base.html" %}
+{% block title %}사용자 편집{% endblock %}
+{% block content %}
+
+<h2>사용자 편집</h2>
+<form id="user-edit-form" action="/crud/users/{{ user.id }}" method="POST" role="form" onsubmit="return user_edit_go();">
+    {{ form.csrf_token }}
+    <div class="card-body register-card-body">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="username" name="username" placeholder="사용자명" value="{{ user.username }}">
+        </div>
+        <div class="input-group mb-3">
+            <input type="email" class="form-control" id="email" name="email" placeholder="메일 주소" value="{{ user.email }}">
+        </div>
+        <div class="input-group mb-3" onclick="OpenWindow('/crud/pwd_check?id={{ user.id }}','비밀번호변경','500','200');">
+            <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" value="" readonly>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <button type="submit" id="submit" name="submit" class="btn btn-primary btn-block" value="갱신" onclick="return validatePassword();">갱신</button>
+            </div>
+            <div class="col-md-4">
+                <a href="{{ url_for('crud.users')}}" class="btn btn-secondary btn-block">돌아가기</a>
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-danger btn-block" value="삭제" onclick="delete_go();">삭제</button>              
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<form id="delete-form" action="{{ url_for('crud.delete_user', user_id=user.id) }}" method="post">
+    {{ form.csrf_token }}
+</form>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="{{ url_for('crud.static', filename='common.js') }}"></script>
+<script src="{{ url_for('crud.static', filename='user_edit.min.js') }}"></script>
+
+<script>
+    function validatePassword() {
+        var passwordField = document.getElementById('password');
+        if (passwordField.value === '') {
+            alert('비밀번호를 입력하세요.');
+            return false;
+        }
+        return true;
+    }
+
+    function delete_go(){
+        if (confirm('정말로 삭제하시겠습니까?')){
+            document.querySelector("form#delete-form").submit()
+        }
+        return false;
+    }
+</script>
+
+{% endblock %}

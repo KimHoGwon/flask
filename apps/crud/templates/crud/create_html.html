@@ -1,0 +1,98 @@
+{% extends "crud/base.html" %}
+{% block title %}사용자 신규 작성{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>사용자 신규 등록</title>
+</head>
+
+<body>
+    <div class="card-body register-card-body">
+        <form action="/crud/users/new/html" method="POST" role="form" onsubmit="return user_regist_go();">
+            {{ form.csrf_token }}
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="username" name="username" placeholder="사용자명" value=""/>
+            </div>
+            <div class="input-group mb-3">
+                <input type="email" class="form-control" id="email" name="email" placeholder="메일 주소" value=""/>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" value=""/>
+            </div>
+            <div class="input-group mb-3">
+                <input type="submit" id="submit" name="submit" class="btn btn-primary btn-block" value="신규 등록">
+            </div>
+        </form>
+    </div>
+</body>
+<script>
+var vali_message={
+    username : {
+        none : "사용자명은 필수입니다.",
+        length : "30문자 이내로 입력해 주세요."
+    },
+    email : {
+        none : "메일 주소는 필수입니다.",
+        regex : "메일 주소의 형식으로 입력해 주세요."
+    }, 
+    password : {
+        none : "비밀번호는 필수입니다."
+    }
+
+}
+function user_regist_go(){
+   
+    for (var div of document.querySelectorAll('div.vali')){ div.remove();}
+    var submit_ok = true;
+    form =document.querySelector("form[role='form']");
+    
+    for (var element of form){
+        //alert(element.name);
+        if(!element.value){
+            make_message_span(element,vali_message[element.name].none);
+            submit_ok = false;
+            continue;
+        }
+
+
+        switch(element.name){
+            case "username":
+                if(element.value.length > 30){ 
+                    make_message_span(element,vali_message[element.name].length);
+                    submit_ok = false;
+                }
+            break;
+            case "email":
+                let regexp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/g;
+                if(!element.value.match(regexp)){ 
+                    make_message_span(element,vali_message[element.name].regex);
+                    submit_ok = false;
+                }
+            break;
+        }
+        
+    }
+    return submit_ok;
+}
+
+function make_message_span(target, message){
+    let div = document.createElement('div');
+    div.classList.add("vali")
+
+    let span = document.createElement('span');
+    span.style.color='red';
+    span.innerHTML = message;
+
+    div.append(span);
+    
+    target.after(div);
+    
+}
+</script>
+
+</html>
+{% endblock %}

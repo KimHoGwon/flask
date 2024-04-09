@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8"/>
+    <title>공지사항 편집</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    {% extends "notice/base.html" %}
+    {% block title %}공지사항 편집{% endblock %}
+    {% block content %}    
+    <div class="card card-info">
+        <div class="card-header">
+            <h3 class="card-title"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">공지사항 편집</font></font></h3>
+        </div>
+        <!-- /.card-header -->
+        <form action="{{ url_for('notice.edit_notice', notice_id=notice.id) }}" method="POST" novalidate="novalidate">
+            {{ form.csrf_token }}
+            <div class="card-body">
+                <div class="form-group row">
+                    <label for="title" class="col-sm-2 col-form-label"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">제목</font></font></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="제목" value="{{ notice.title }}">
+                    </div>
+                </div>
+                {% for error in form.title.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+                <div class="form-group row">
+                    <label for="author" class="col-sm-2 col-form-label"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">작성자</font></font></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="author" name="author" placeholder="작성자명" value="{{ notice.author }}">
+                    </div>
+                </div>
+                {% for error in form.author.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+                <div class="form-group row">
+                    <label for="content" class="col-sm-2 col-form-label"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">내용</font></font></label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" id="content" name="content" rows="5" placeholder="내용">{{ notice.content }}</textarea>
+                    </div>
+                </div>
+                {% for error in form.content.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="submit" class="btn btn-info"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">수정</font></font></button>
+                <a href="{{ url_for('notice.notice_detail', notice_id=notice.id) }}" class="btn btn-info"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">돌아가기</font></font></a>
+            </div>
+            <!-- /.card-footer -->
+        </form>
+    </div>
+    {% endblock %}
+</body>
+</html>

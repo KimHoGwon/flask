@@ -1,0 +1,47 @@
+{% extends "notice/base.html" %}
+{% block title %}공지사항 상세 내용{% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card mt-5">
+                <div class="card-header">
+                    <h3 class="card-title">공지사항</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th class="table-dark" style="width: 20%;">제목</th>
+                                <td>{{ notice.title }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-dark">작성자</th>
+                                <td>{{ notice.author }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-dark">작성일</th>
+                                <td>{{ notice.created_at.strftime("%Y.%m.%d %H:%M") }}</td>
+                            </tr>
+                            <tr>
+                                <th class="table-dark">내용</th>
+                                <td><textarea disabled rows="10" class="form-control bg-white" style="resize: none;">{{ notice.content }}</textarea></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ url_for('notice.edit_notice', notice_id=notice.id) }}" class="btn btn-primary">수정</a>
+                    <a href="{{ url_for('notice.notice_index')}}" class="btn btn-secondary">돌아가기</a>
+                    <!-- 삭제 버튼 추가 -->
+                    <form action="{{ url_for('notice.delete_notice', notice_id=notice.id) }}" method="get" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

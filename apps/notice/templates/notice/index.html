@@ -1,0 +1,41 @@
+{% extends "notice/base.html" %}
+{% block title %}공지사항 일람{% endblock %}
+{% block content %}
+
+<div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">공지사항</h3>
+
+          
+      </div>
+      <div class="card-body table-responsive p-0">
+        <table class="table table-hover text-nowrap">
+          <thead>
+            <tr>
+              <th>순번</th>
+              <th>제목</th>
+              <th>작성자명</th>
+              <th>날짜</th>           
+            </tr>
+          </thead>
+          <tbody>
+            {% for notice in notices %}
+            <tr>
+                <td><a href="{{ url_for('notice.notice_detail', notice_id=notice.id) }}">{{ notice.id }}</a></td>
+                <td>{{ notice.title }}</td>
+                <td>{{ notice.author }}</td>
+                <td>{{ notice.created_at.strftime("%Y.%m.%d") }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <a href="{{ url_for('notice.create_notice') }}"><input type="submit" value="작성"></a>
+      </div>
+    </div>
+  </div>
+  
+
+{% endblock %}
+
+

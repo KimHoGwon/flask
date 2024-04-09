@@ -1,0 +1,19 @@
+{% block title %}비밀번호 확인{% endblock %}
+{% block content %}
+<form method="POST" role="form" >
+    {{ form.csrf_token }}
+    <input type="hidden" name="user_id" value="{{id}}" />
+    <label for="pwd_input" >현재 패스워드</label>
+    <input type="password" name="password" />
+    <input type="submit" value="전송">
+</form>
+
+{%with messages = get_flashed_messages()%}
+    {% for message in messages%}
+        <script>
+            alert("{{message}}");
+        </script>
+    {% endfor %}
+{% endwith %}
+
+{% endblock %}

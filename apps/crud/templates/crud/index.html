@@ -1,0 +1,37 @@
+{% extends "crud/base.html" %}
+{% block title %}사용자 일람{% endblock %}
+{% block content %}
+
+<div class="col-12">
+  <div class="card">
+    <div class="card-header">
+      <h3 class="card-title">사용자 일람</h3>
+    </div>
+    <div class="card-body table-responsive p-0">
+      <table class="table table-hover text-nowrap">
+        <thead>
+          <tr>
+            <th>사용자 ID</th>
+            <th>사용자명</th>
+            <th>메일 주소</th>    
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td><a href="{{ url_for('crud.edit_user', user_id=user.id)}}">{{user.id}}</a></td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.email }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer">
+      <a href="{{ url_for('crud.create_user') }}"><input type="submit" value="신규 등록"></a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
